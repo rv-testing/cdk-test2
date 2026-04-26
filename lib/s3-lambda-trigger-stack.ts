@@ -5,14 +5,13 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as s3n from 'aws-cdk-lib/aws-s3-notifications';
 
-export class S3LambdaTriggerStack extends cdk.Stack {
-  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
-    super(scope, id, props);
+export interface S3LambdaTriggerStackProps extends cdk.StackProps {
+  notificationBucketName?: string;
+}
 
-    const notificationBucket = new cdk.CfnParameter(this, 'NotificationBucket', {
-      type: 'String',
-      description: 'S3 bucket name that is the trigger to lambda',
-    });
+export class S3LambdaTriggerStack extends cdk.Stack {
+  constructor(scope: Construct, id: string, props?: S3LambdaTriggerStackProps) {
+    super(scope, id, props);
 
     const lambdaRole = new iam.Role(this, 'LambdaIAMRole', {
       assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
@@ -43,7 +42,7 @@ export class S3LambdaTriggerStack extends cdk.Stack {
     });
 
     const bucket = new s3.Bucket(this, 'S3BucketNotification', {
-      bucketName: notificationBucket.valueAsString,
+      bucketName: props?.notificationBucketName,
       encryption: s3.BucketEncryption.S3_MANAGED,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
     });

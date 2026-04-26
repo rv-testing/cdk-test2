@@ -43,7 +43,13 @@ This repository now contains an AWS CDK (TypeScript) conversion of
 4. Deploy:
 
 	```bash
-	npm run deploy -- --parameters NotificationBucket=<your-bucket-name>
+	npm run deploy
+	```
+
+5. Optional: set a fixed bucket name when you want one:
+
+	```bash
+	npm run deploy -- -c notificationBucketName=<your-bucket-name>
 	```
 
 ## About `policy.json`
@@ -55,3 +61,13 @@ Lambda function itself.
 The converted CDK stack does not need to attach this broad policy to the Lambda
 execution role, because the function only logs the event. Use `policy.json` for
 the IAM identity that runs `cdk deploy` if your account requires those rights.
+
+## Diff Behavior
+
+`cdk diff --method=change-set` was failing because CloudFormation change sets do
+not allow missing required parameter values. The stack now avoids that required
+parameter, so `cdk diff` works without passing `NotificationBucket`.
+
+`--method=change-set` still requires AWS credentials and a resolvable target
+account/region. The app now uses `CDK_DEFAULT_ACCOUNT` and
+`CDK_DEFAULT_REGION` when the CDK CLI provides them.
