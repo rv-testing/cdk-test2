@@ -1,0 +1,35 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "S3ReadWriteAccess",
+            "Effect": "Allow",
+            "Action": "s3:*",
+            "Resource": [
+                "arn:aws:s3:::s3-lambda-trigger-123431923271-ca-central-1-an",
+                "arn:aws:s3:::s3-lambda-trigger-123431923271-ca-central-1-an/*"
+            ]
+        },
+        {
+            "Sid": "LambdaFullAccess",
+            "Effect": "Allow",
+            "Action": "lambda:*",
+            "Resource": "*"
+        },
+        {
+            "Sid": "AllowRoleCreateTagAndInlinePolicy",
+            "Effect": "Allow",
+            "Action": [
+                "iam:CreateRole",
+                "iam:TagRole",
+                "iam:UntagRole",
+                "iam:ListRoleTags",
+                "iam:PutRolePolicy",
+                "iam:DeleteRolePolicy",
+                "iam:GetRolePolicy",
+                "iam:ListRolePolicies"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
