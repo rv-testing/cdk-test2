@@ -52,6 +52,38 @@ This repository now contains an AWS CDK (TypeScript) conversion of
 	npm run deploy -- -c notificationBucketName=<your-bucket-name>
 	```
 
+## Environments: dev, qa, prod
+
+The app now synthesizes three stacks by default:
+
+- `S3LambdaTriggerStack-dev`
+- `S3LambdaTriggerStack-qa`
+- `S3LambdaTriggerStack-prod`
+
+You can configure each environment independently with CDK context values:
+
+- `<env>Account`
+- `<env>Region`
+- `<env>NotificationBucketName`
+
+Examples:
+
+```bash
+npx cdk synth \
+	-c devAccount=111111111111 \
+	-c devRegion=us-east-1 \
+	-c devNotificationBucketName=my-dev-notification-bucket \
+	-c qaAccount=222222222222 \
+	-c qaRegion=us-east-2 \
+	-c qaNotificationBucketName=my-qa-notification-bucket \
+	-c prodAccount=333333333333 \
+	-c prodRegion=us-west-2 \
+	-c prodNotificationBucketName=my-prod-notification-bucket
+```
+
+If account/region values are not provided for an environment, the app falls
+back to `CDK_DEFAULT_ACCOUNT` and `CDK_DEFAULT_REGION`.
+
 ## About `policy.json`
 
 `policy.json` appears to be a caller/deployer IAM policy (permissions like
