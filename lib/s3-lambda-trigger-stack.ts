@@ -51,5 +51,15 @@ export class S3LambdaTriggerStack extends cdk.Stack {
       s3.EventType.OBJECT_CREATED_PUT,
       new s3n.LambdaDestination(s3TriggerLambdaFunction),
     );
+
+    new cdk.CfnOutput(this, 'S3BucketNameOutput', {
+      value: bucket.bucketName,
+      description: 'Name of the S3 bucket configured for notifications.',
+    });
+
+    new cdk.CfnOutput(this, 'S3TriggerLambdaFunctionNameOutput', {
+      value: s3TriggerLambdaFunction.functionName,
+      description: 'Name of the Lambda function triggered by S3 object creation.',
+    });
   }
 }
